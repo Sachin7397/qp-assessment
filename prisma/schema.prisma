@@ -1,0 +1,43 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql" // Change based on your database
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String  @id @default(uuid())
+  name     String
+  email    String  @unique
+  password String
+  role     String
+  orders   Order[]
+}
+
+model Grocery {
+  id         String      @id @default(uuid())
+  name       String
+  price      Float
+  stock      Int
+  orderItems OrderItem[]
+}
+
+model Order {
+  id        String      @id @default(uuid())
+  userId    String
+  user      User        @relation(fields: [userId], references: [id])
+  items     OrderItem[]
+  createdAt DateTime    @default(now())
+}
+
+model OrderItem {
+  id        String  @id @default(uuid())
+  orderId   String
+  groceryId String
+  quantity  Int  // Make sure this field exists
+  order     Order  @relation(fields: [orderId], references: [id])
+  grocery   Grocery @relation(fields: [groceryId], references: [id])
+}
+
