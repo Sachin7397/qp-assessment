@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import prisma from "../config/db";
 
-// 📌 Add Grocery (Admin Only)
+
 export const addGrocery = async (req: Request, res: Response): Promise<void> => {
   const { name, price, stock } = req.body;
 
@@ -18,7 +18,7 @@ export const addGrocery = async (req: Request, res: Response): Promise<void> => 
   }
 };
 
-// 📌 Get All Groceries (Both Admin & User)
+
 export const getAllGroceries = async (req: Request, res: Response) => {
   try {
     const groceries = await prisma.grocery.findMany();
@@ -28,7 +28,7 @@ export const getAllGroceries = async (req: Request, res: Response) => {
   }
 };
 
-// 📌 Update Grocery (Admin Only)
+
 export const updateGrocery = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { name, price, stock } = req.body;
@@ -44,7 +44,7 @@ export const updateGrocery = async (req: Request, res: Response) => {
   }
 };
 
-// 📌 Delete Grocery (Admin Only)
+
 export const deleteGrocery = async (req: Request, res: Response) => {
   const { id } = req.params;
 

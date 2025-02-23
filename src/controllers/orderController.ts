@@ -1,21 +1,19 @@
 import { Request, Response } from "express";
 import prisma from "../config/db";
-import { Prisma } from "@prisma/client"; // ✅ Import Prisma types
+import { Prisma } from "@prisma/client";
 
-// 📌 Create Order (User) & Reduce Grocery Stock
 export const createOrder = async (req: Request, res: Response): Promise<void> => {
   const { items } = req.body;
-  const userId = (req as any).user?.id; // ✅ Ensure user ID exists
+  const userId = (req as any).user?.id;
 
-  // 🛑 Validate input
+
   if (!items || !Array.isArray(items) || items.length === 0) {
     res.status(400).json({ error: "Invalid order items" });
     return;
   }
 
   try {
-    // 📌 Start Transaction (Atomic Operation)
-    const order = await prisma.$transaction(async (tx: Prisma.TransactionClient) => { // ✅ Explicitly typed `tx`
+    const order = await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
       for (const item of items) {
         const grocery = await tx.grocery.findUnique({
           where: { id: item.groceryId },
@@ -29,15 +27,11 @@ export const createOrder = async (req: Request, res: Response): Promise<void> =>
         if (grocery.stock < item.quantity) {
           throw new Error(`Insufficient stock for groceryId: ${item.groceryId}`);
         }
-
-        // ✅ Reduce Grocery Stock
         await tx.grocery.update({
           where: { id: item.groceryId },
           data: { stock: { decrement: item.quantity } },
         });
       }
-
-      // ✅ Create Order
       return tx.order.create({
         data: {
           userId,
@@ -60,7 +54,7 @@ export const createOrder = async (req: Request, res: Response): Promise<void> =>
   }
 };
 
-// 📌 Get User Orders
+
 export const getUserOrders = async (req: Request, res: Response): Promise<void> => {
   const userId = (req as any).user?.id;
 

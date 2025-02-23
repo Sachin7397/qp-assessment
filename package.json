@@ -30,7 +30,8 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
-    "prisma": "^6.4.1"
+    "prisma": "^6.4.1",
+    "qp-assessment": "file:"
   },
   "repository": {
     "type": "git",

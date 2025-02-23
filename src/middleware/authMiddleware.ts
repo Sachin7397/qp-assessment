@@ -5,16 +5,16 @@ export const authenticate = (req: Request, res: Response, next: NextFunction): v
   const token = req.cookies.token;
   if (!token) {
     res.status(401).json({ error: "Access denied." });
-    return; // ✅ Explicitly return to avoid issues
+    return;
   }
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY as string) as { id: string; role: string };
     req.user = decoded;
-    next(); // ✅ No return needed here
+    next();
   } catch (error) {
     res.status(400).json({ error: "Invalid token." });
-    return; // ✅ Ensure function always ends properly
+    return;
   }
 };
 
