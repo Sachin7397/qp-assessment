@@ -7,10 +7,10 @@ services:
     restart: always
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: Abcd%4012345
+      POSTGRES_PASSWORD: Abcd12345
       POSTGRES_DB: grocery_Booking_db
     ports:
-      - "5431:5432"
+      - "5431:5431"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
@@ -20,7 +20,7 @@ services:
     depends_on:
       - postgres
     environment:
-      DATABASE_URL: postgresql://postgres:Abcd12345@postgres:5432/grocery_booking_db?schema=public
+      DATABASE_URL: postgresql://postgres:Abcd12345postgres:5431/grocery_Booking_db?schema=public
     ports:
       - "3000:5000"
     volumes:
